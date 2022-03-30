@@ -1,5 +1,5 @@
 import { Application } from 'pixi.js';
-import io from 'socket.io';
+import { io } from "./lib/socket.io.esm.min.js";
 
 function setState(text) {
     console.log(text);
@@ -13,7 +13,8 @@ const app = new Application({
     width: 256,
     height: 256,
     antialias: true,
-    transparent: false,
+    backgroundAlpha: 1,
+    backgroundColor: 0xffffff,
     resolution: 1,
 });
 document.body.appendChild(app.view);
