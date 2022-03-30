@@ -5,7 +5,10 @@
     "main": "main.js",
     "type": "module",
     "scripts": {
-        "test": "node main.js"
+        "test": "nodemon main.js",
+        "start": "node main.js",
+        "dev": "parcel watch ./dev_src/index.html",
+        "build": "parcel build ./dev_src/index.html"
     },
     "keywords": [
         "ws",
@@ -20,6 +23,8 @@
     "dependencies": {
         "chalk": "^5.0.1",
         "express": "^4.17.3",
+        "parcel-bundler": "^1.12.5",
+        "pixi.js": "^6.3.0",
         "socket.io": "^4.4.1"
     }
 }
