@@ -1,0 +1,19 @@
+{
+  "name": "livemouse",
+  "version": "1.0.0",
+  "description": "Moving mouse with others",
+  "main": "main.js",
+  "scripts": {
+    "test": "node main.js"
+  },
+  "keywords": [
+    "ws",
+    "socketio",
+    "pixi",
+    "mouse",
+    "live",
+    "114514"
+  ],
+  "author": "bcmray_crazy",
+  "license": "ISC"
+}
