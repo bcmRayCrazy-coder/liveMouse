@@ -1,19 +1,25 @@
 {
-  "name": "livemouse",
-  "version": "1.0.0",
-  "description": "Moving mouse with others",
-  "main": "main.js",
-  "scripts": {
-    "test": "node main.js"
-  },
-  "keywords": [
-    "ws",
-    "socketio",
-    "pixi",
-    "mouse",
-    "live",
-    "114514"
-  ],
-  "author": "bcmray_crazy",
-  "license": "ISC"
+    "name": "livemouse",
+    "version": "1.0.0",
+    "description": "Moving mouse with others",
+    "main": "main.js",
+    "type": "module",
+    "scripts": {
+        "test": "node main.js"
+    },
+    "keywords": [
+        "ws",
+        "socketio",
+        "pixi",
+        "mouse",
+        "live",
+        "114514"
+    ],
+    "author": "bcmray_crazy",
+    "license": "ISC",
+    "dependencies": {
+        "chalk": "^5.0.1",
+        "express": "^4.17.3",
+        "socket.io": "^4.4.1"
+    }
 }
