@@ -11,6 +11,36 @@ function draw(x, y) {
     app.stage.addChild(borderline);
 }
 
+setState('加载材质');
+var texture_colors = [
+    'blue',
+    'green',
+    'red',
+    'yellow',
+    'cyan',
+    'orange',
+    'pink',
+    'purple',
+]
+
+function loadColorTexture(i, loader, max, init) {
+    // var color = texture_colors[i];
+    setState(`加载 ${texture_colors[i]}`);
+    console.log(loader);
+    loader
+        .add(texture_colors[i], `./img/cursor_${texture_colors[i]}.png`)
+        .load(() => {
+            if (i < max - 1) {
+                loadColorTexture(i + 1, loader, max, init);
+            } else {
+                setState('加载完成');
+                init();
+            }
+        });
+}
+
+
+
 // 初始化socket
 setState('连接服务器...');
 const socket = io();
@@ -20,9 +50,13 @@ var my_cursor = new Sprite();
 var id = '';
 var cursors = {};
 
-socket.emit('auth', {
-    name: prompt('请输入你的名字'),
+loadColorTexture(0, loader, texture_colors.length, () => {
+    socket.emit('auth', {
+        name: prompt('请输入你的名字'),
+    });
 });
+
+
 socket.on('authBack', ({ current_cursor }) => {
     setState('连接成功');
     id = socket.id;
@@ -78,34 +112,46 @@ socket.on('mouseMove', ({ x, y, id }) => {
     cursors[id].x = x;
     cursors[id].y = y;
 });
-socket.on('playerJoin', ({ name, tid, tcurrent_cursor, cursor_list }) => {
+socket.on('playerJoin', ({ name, tid, tcurrent_cursor }) => {
     // console.log(tid);
     console.log(tcurrent_cursor);
-    if (tid == id) {
-        cursors = cursor_list;
-        for (const key in cursors) {
-            if (Object.hasOwnProperty.call(cursors, key)) {
-                const e = cursors[key];
-                app.stage.addChild(e);
-            }
-        }
-    }
-    loader
-        .add(tcurrent_cursor, './img/cursor_' + tcurrent_cursor + '.png')
-        .load(() => {
-            cursors[tid] = new Sprite(loader.resources[tcurrent_cursor].texture);
-            console.log(cursors);
-            app.stage.addChild(cursors[tid]);
-        });
+    // loader
+    //     .add(tcurrent_cursor, './img/cursor_' + tcurrent_cursor + '.png')
+    //     .load(() => {
+    cursors[tid] = new Sprite(loader.resources[tcurrent_cursor].texture);
+    console.log(cursors);
+    app.stage.addChild(cursors[tid]);
+    // });
     // }
-    setInterval(() => {
-        socket.emit("cursorFetchBack", {
-            sid: id,
-            scursor: cursors[id]
-        });
-    }, 5000);
     setState(`${name}加入了房间`);
 });
 socket.on('playerLeave', ({ name }) => {
     setState(`${name}离开了房间`);
 });
+socket.on('cursorFetchBack', ({ sid, scursor: { x, y, texture } }) => {
+    for (const key in cursors) {
+        if (Object.hasOwnProperty.call(cursors, key)) {
+            app.stage.removeChild(cursors[sid]);
+        }
+    }
+    cursors[sid] = new Sprite(loader.resources[texture].texture);
+    for (const key in cursors) {
+        if (Object.hasOwnProperty.call(cursors, key)) {
+            app.stage.addChild(cursors[sid]);
+        }
+    }
+    cursors[sid].x = x;
+    cursors[sid].y = y;
+});
+setInterval(() => {
+    var mcursor = cursors[id];
+    console.log(mcursor);
+    socket.emit("cursorFetchBack", {
+        sid: id,
+        scursor: {
+            x: mcursor.x,
+            y: mcursor.y,
+            texture: mcursor.texture.textureCacheIds[0]
+        }
+    });
+}, 5000);

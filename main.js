@@ -21,7 +21,7 @@ var cursors = [
     'pink',
     'purple',
 ];
-var cursor_list = {};
+// var cursor_list = {};
 
 io.on('connection', (socket) => {
     var name = '';
@@ -44,15 +44,15 @@ io.on('connection', (socket) => {
         io.emit('playerJoin', {
             name,
             tid: id,
-            tcurrent_cursor: current_cursor,
-            cursor_list
+            tcurrent_cursor: current_cursor
         });
     });
     socket.on('mouseMove', (data) => {
         io.emit('mouseMove', data);
     });
-    socket.on('cursorFetchBack', ({ sid, scursor }) => {
-        cursor_list[sid] = scursor;
+    socket.on('cursorFetchBack', (data) => {
+        // cursor_list[sid] = scursor;
+        io.emit('cursorFetchBack', data);
     });
     socket.on('disconnect', () => {
         // member_num -= 1;
