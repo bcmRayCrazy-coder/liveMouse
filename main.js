@@ -15,6 +15,12 @@ io.on('connection', (socket) => {
     socket.on('auth', (data) => {
         name = data.name;
         socket.emit('authBack', true);
+        socket.emit('playerJoin', {
+            name,
+        });
+    });
+    socket.on('mouseMove', (data) => {
+        io.emit('mouseMove', data);
     });
 });
 
