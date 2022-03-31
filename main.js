@@ -10,10 +10,23 @@ const io = new Server(server);
 
 app.use('/', express.static('dist'));
 
+var member_num = 0;
+var cursors = [
+    'blue',
+    'green',
+    'red',
+    'yellow',
+    'cyan',
+    'orange',
+    'pink',
+    'purple',
+];
 io.on('connection', (socket) => {
     var name = '';
+    var current_cursor = cursors[member_num];
     socket.on('auth', (data) => {
         name = data.name;
+        member_num += 1;
         socket.emit('authBack', true);
         socket.emit('playerJoin', {
             name,
@@ -21,6 +34,12 @@ io.on('connection', (socket) => {
     });
     socket.on('mouseMove', (data) => {
         io.emit('mouseMove', data);
+    });
+    socket.on('disconnect', () => {
+        member_num -= 1;
+        socket.emit('playerLeave', {
+            name,
+        });
     });
 });
 

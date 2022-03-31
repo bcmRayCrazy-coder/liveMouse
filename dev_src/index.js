@@ -61,3 +61,6 @@ socket.on('mouseMove', ({ x, y }) => {
 socket.on('playerJoin', ({ name }) => {
     setState(`${name}加入了房间`);
 });
+socket.on('playerLeave', ({ name }) => {
+    setState(`${name}离开了房间`);
+});
