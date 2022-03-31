@@ -7,8 +7,7 @@
     "scripts": {
         "test": "nodemon main.js",
         "start": "node main.js",
-        "dev": "parcel watch ./dev_src/index.html",
-        "build": "parcel build ./dev_src/index.html"
+        "build": "webpack --config webpack.config.js"
     },
     "keywords": [
         "ws",
@@ -23,8 +22,14 @@
     "dependencies": {
         "chalk": "^5.0.1",
         "express": "^4.17.3",
+        "nodemon": "^2.0.15",
         "parcel-bundler": "^1.12.5",
         "pixi.js": "^6.3.0",
         "socket.io": "^4.4.1"
+    },
+    "devDependencies": {
+        "html-webpack-plugin": "^5.5.0",
+        "webpack": "^5.70.0",
+        "webpack-cli": "^4.9.2"
     }
 }
